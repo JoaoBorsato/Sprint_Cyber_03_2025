@@ -1,5 +1,3 @@
-name: CI/CD Pipeline
-
 on:
   push:
     branches: [ "main" ]
@@ -7,39 +5,18 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-run:
+  zap_scan:
     runs-on: ubuntu-latest
+    name: Scan ZAP website
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: pip install django gunicorn requests
-
-      - name: Run application in background
-        run: |
-          nohup python manage.py runserver 0.0.0.0:8000 &
-
-  zap-scan:
-    runs-on: ubuntu-latest
-    needs: build-and-run
-    steps:
-      - name: Wait for server to start
-        run: sleep 15
-
-      - name: Test server availability
-        run: curl -I http://localhost:8000
-
-      - name: Run ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.14.0
+          ref: master
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.3.0
         with:
-          target: 'http://localhost:8000'
           token: ${{ secrets.GITHUB_TOKEN }}
-          issue_title: 'Relatório de Vulnerabilidades DAST da FinSecure'
-          fail_action: true
-
+          target: 'https://www.zaproxy.org/'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
