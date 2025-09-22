@@ -17,4 +17,4 @@ jobs:
           target: 'http://localhost:8000' # URL da aplicação em execução
           token: ${{ secrets.GITHUB_TOKEN }}
           issue_title: 'Relatório de Vulnerabilidades DAST da FinSecure'
-          fail_action: false
+          fail_action: true
