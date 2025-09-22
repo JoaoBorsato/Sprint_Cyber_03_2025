@@ -19,9 +19,9 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install dependencies manual
         run: |
-          pip install -r requirements.txt
+          pip install django gunicorn requests  # Adicione os pacotes que sua aplicação usa
 
       - name: Run application in background
         run: |
