@@ -1,0 +1,1 @@
+./dependency-check.sh --project "FinSecure" --scan "requirements.txt" --format HTML --out.
